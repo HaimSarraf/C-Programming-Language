@@ -1,58 +1,70 @@
 #include <stdio.h>
 #include <math.h>
 
+void choose_an_operator();
+
 int main()
 {
-    int num1, num2, operator;
+    int operator;
 
-    float result;
+    double num1, num2, result;
 
-    printf("Welcome to Simple Calculator\n");
+    while (1)
+    {
+        choose_an_operator();
 
-    printf("Choose one of the Following Operators :\n1.Add\n2.Subtract\n3.Multiply\n4.Divine\n5.Modulus\n6.Power\n7.Exit\n");
+        scanf("%d", &operator);
 
+        if (operator <= 0 || operator >= 7)
+        {
+            break;
+        }
+
+        printf("\nPlease Enter The First Number : ");
+        scanf("%lf", &num1);
+        printf("\nNow, Enter The Second Number : ");
+        scanf("%lf", &num2);
+
+        switch (operator)
+        {
+        case 1:
+            result = num1 + num2;
+            break;
+        case 2:
+            result = num1 - num2;
+            break;
+        case 3:
+            result = num1 * num2;
+            break;
+        case 4:
+            result = num1 / num2;
+            break;
+        case 5:
+            result = (int)num1 % (int)num2;
+            break;
+        case 6:
+            result = pow(num1, num2);
+            break;
+
+        default:
+            break;
+        }
+        printf("\nResult of Operation is : %.2f", result);
+    };
+
+    return 0;
+}
+
+void choose_an_operator()
+{
+    printf("\n\n\n\n\nWelcome to Simple Calculator\n");
+    printf("\nChoose one of the Following Operators :\n");
+    printf("1.Add\n");
+    printf("2.Subtract\n");
+    printf("3.Multiply\n");
+    printf("4.Divine\n");
+    printf("5.Modulus\n");
+    printf("6.Power\n");
+    printf("7.EXIT\n");
     printf("\nNow Enter Your Choise's Number :");
-
-    scanf("%d", &operator);
-
-    printf("Please Enter The First Number : ");
-
-    scanf("%d", &num1);
-
-    printf("Now, Enter The Second Number : ");
-
-    scanf("%d", &num2);
-
-    if (operator == 1)
-    {
-        result = num1 + num2;
-    }
-    else if (operator == 2)
-    {
-        result = num1 - num2;
-    }
-    else if (operator == 3)
-    {
-        result = num1 * num2;
-    }
-    else if (operator == 4)
-    {
-        result = num1 / num2;
-    }
-    else if (operator == 5)
-    {
-        result = num1 % num2;
-    }
-    else if (operator == 6)
-    {
-        result = num1 ^ num2;
-    }
-    else if (operator == 7)
-    {
-        printf("Exit\n");
-    }
-    else
-        printf("Please Enter a Valid Number (1-7)");
-
-    printf("Result of Operation is : %.2f\n", result);
 }
