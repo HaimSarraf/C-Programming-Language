@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
+double division(double, double);
+double modulus(double, double);
 void choose_an_operator();
 
 int main()
@@ -37,10 +39,10 @@ int main()
             result = num1 * num2;
             break;
         case 4:
-            result = num1 / num2;
+            result = division(num1, num2);
             break;
         case 5:
-            result = (int)num1 % (int)num2;
+            result = modulus(num1, num2);
             break;
         case 6:
             result = pow(num1, num2);
@@ -67,4 +69,26 @@ void choose_an_operator()
     printf("6.Power\n");
     printf("7.EXIT\n");
     printf("\nNow Enter Your Choise's Number :");
+}
+
+double division(double a, double b)
+{
+
+    if (b == 0)
+    {
+        fprintf(stderr, "Error: Division by zero is not allowed.\n");
+        return NAN;
+    }
+
+    return a / b;
+}
+double modulus(double a, double b)
+{
+    if (b == 0)
+    {
+        fprintf(stderr, "Error: Modulus by zero is not allowed.\n");
+        return NAN;
+    }
+
+    return (int)a % (int)b;
 }
