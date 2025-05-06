@@ -51,8 +51,11 @@ int main()
         default:
             break;
         }
-        printf("\nResult of Operation is : %.2f", result);
-    };
+        if (result != NAN)
+        {
+            printf("\nResult of Operation is : %.2f", result);
+        }
+    }
 
     return 0;
 }
