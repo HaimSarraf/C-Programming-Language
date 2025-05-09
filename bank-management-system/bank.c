@@ -26,7 +26,7 @@ int main()
         printf("\n1. Create Account");
         printf("\n2. Deposite Money");
         printf("\n3. Withdraw Money");
-        printf("\n4. Chack Balance");
+        printf("\n4. Check Balance");
         printf("\n5. EXIT\n\n");
         printf("\nEnter your choise please : ");
         scanf("%d", &chiose);
@@ -160,7 +160,63 @@ void deposite_money()
 
 void withdraw_money()
 {
-    printf("\nWithdrawing Money...");
+    printf("\nWithdrawing Money...\n");
+
+    FILE *file = fopen(ACCOUNT_FILE, "rb+");
+
+    if (file ==NULL)
+    {
+        printf("\nUnable to Open File !!");
+
+        return;
+    }
+    
+    Account acc_to_read;
+
+    int acc_no;
+
+    float money;
+
+    printf("Enter Your Account_No: ");
+
+    scanf("%d", &acc_no);
+
+    printf("Enter the Amount you wish to Withdraw: ");
+
+    scanf("%f", &money);
+
+    while (fread(&acc_to_read, sizeof(acc_to_read),1,file))
+    {
+        if (acc_to_read.acc_no == acc_no)
+        {
+            if (acc_to_read.balacne >= money)
+            {
+                acc_to_read.balacne -= money;
+
+                fseek(file, -sizeof(acc_to_read), SEEK_CUR);
+
+                fwrite(&acc_to_read, sizeof(acc_to_read), 1, file );
+            
+                printf("\nSuccessfully witdrawn [ %.2f ] $"
+                       "\nReamining Balance is [ %.2f ] $"
+                       "\n\nACCONT_NO_%d *** ACCOUNT_BALANCE_[ %.2f ] $\n",
+                       money, acc_to_read.balacne ,
+                       acc_to_read.acc_no, acc_to_read.balacne
+                );
+            } else {
+                printf("\nInsufficient Balance !!\n");
+            }
+            
+            fclose(file);
+            return;
+        }
+        
+    }
+
+    fclose(file);
+    
+    printf("Money could not be Witdrawn Since Account_No_%d was Not Found in records !!", acc_no);
+    
 }
 
 void check_balance()
