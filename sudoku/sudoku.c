@@ -18,7 +18,7 @@ int solve_puzzle(int puzzle[9][9], int row, int col);
 
 int main()
 {
-    printf("\n\n\tWelcome to SUDOKU Solver ");
+    printf("\n\n*****  Welcome to SUDOKU Solver  *****");
 
     printf("\n\n\nOriginal Puzzle : ");
 
@@ -26,13 +26,13 @@ int main()
 
     if (solve_puzzle(puzzle, 0, 0))
     {
-        printf("\n\tThe Puzzle is Solved : ");
+        printf("\n!! The Puzzle is Solved !! ");
 
         print_puzzle(puzzle);
     }
     else
     {
-        printf("\nThis Puzzle is not Solvable !!");
+        printf("\n!! This Puzzle WON'T be Solved !!");
     }
 
     return 0;
@@ -95,8 +95,8 @@ int valid_move(int puzzle[9][9], int row, int col, int val)
     };
 
     // valid square
-    int r = row - (row % 3);
-    int c = col - (col % 3);
+    int r = row - (row % 3); //starting row
+    int c = col - (col % 3); //starting col
 
     for (int i = 0; i < 3; i++)
     {
