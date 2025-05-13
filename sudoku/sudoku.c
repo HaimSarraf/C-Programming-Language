@@ -20,7 +20,7 @@ int main()
 {
     printf("\n\n\tWelcome to SUDOKU Solver ");
 
-    printf("\n\n\nnOriginal Puzzle : ");
+    printf("\n\n\nOriginal Puzzle : ");
 
     print_puzzle(puzzle);
 
