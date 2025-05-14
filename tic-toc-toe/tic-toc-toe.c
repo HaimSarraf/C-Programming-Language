@@ -377,3 +377,5 @@ int is_valid_move(char board[3][3], int row, int col)
              col < 0 || col > 2 ||
              board[row][col] != ' ');
 }
+
+
