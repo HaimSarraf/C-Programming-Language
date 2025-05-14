@@ -14,6 +14,9 @@ Score score = {.Player = 0, .CPU = 0, .Draw = 0};
 void input_difficulty();
 void clear_screen();
 void print_board(char board[3][3]);
+int check_win(char board[3][3], char player);
+//int check_draw(char board[3][3]);
+
 
 int main()
 {
@@ -93,3 +96,13 @@ void print_board(char board[3][3])
 
     printf("\n\n");
 }
+
+int check_win(char board[3][3], char player)
+{
+
+}
+
+
+
+
+
