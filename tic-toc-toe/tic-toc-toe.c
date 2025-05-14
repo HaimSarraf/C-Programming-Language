@@ -10,9 +10,14 @@ typedef struct
     int CPU;
     int Draw;
 } Score;
-
-int difficulty;
 Score score = {.Player = 0, .CPU = 0, .Draw = 0};
+
+typedef struct
+{
+    int Easy;
+    int Hard;
+} Difficulty;
+Difficulty difficulty = {.Easy = 0, .Hard = 1};
 
 void input_difficulty();
 void clear_screen();
@@ -20,8 +25,8 @@ void print_board(char board[3][3]);
 int check_win(char board[3][3], char player);
 int check_draw(char board[3][3]);
 void play_game();
-void player_move(char board[3][3], char player);
-void cpu_move(char board[3][3], char player);
+void player_move(char board[3][3]);
+void cpu_move(char board[3][3]);
 int is_valid_move(char board[3][3], int row, int col);
 
 int main()
@@ -44,6 +49,8 @@ int main()
 
 void input_difficulty()
 {
+    int choice;
+
     while (1)
     {
         printf("\nSelect Difficulty : ");
@@ -52,17 +59,25 @@ void input_difficulty()
 
         printf("\n2. Veteran(Impossible to win)");
 
-        printf("\nEnter Your Choise : ");
+        printf("\nEnter Your Choice : ");
 
-        scanf("%d", &difficulty);
+        scanf("%d", &choice);
 
-        if (difficulty != 1 && difficulty != 2)
+        if (choice == 1)
         {
-            printf("\n\nIncorrect choise !!\n\n");
+            difficulty.Easy = 1;
+            difficulty.Hard = 0;
+            break;
+        }
+        else if (choice == 2)
+        {
+            difficulty.Easy = 0;
+            difficulty.Hard = 1;
+            break;
         }
         else
         {
-            break;
+            printf("\n\nIncorrect choice !!\n\n");
         }
     }
 }
@@ -167,19 +182,21 @@ void play_game()
 
     char current_player = rand() % 2 == 0 ? X : O;
 
+    print_board(board);
+
     while (1)
     {
-        print_board(board);
-
         if (current_player == X)
         {
-            player_move(board, X);
+            player_move(board);
 
             print_board(board);
 
             if (check_win(board, X))
             {
                 score.Player++;
+
+                print_board(board);
 
                 printf("\n\nPLAYER Wins !!\n");
 
@@ -190,13 +207,15 @@ void play_game()
         }
         else
         {
-            cpu_move(board, O);
+            cpu_move(board);
 
             print_board(board);
 
             if (check_win(board, O))
             {
                 score.CPU++;
+
+                print_board(board);
 
                 printf("\n\nCPU Wins !! Try Again Next Time.\n");
 
@@ -210,6 +229,8 @@ void play_game()
         {
             score.Draw++;
 
+            print_board(board);
+
             printf("\n\nIt's a DRAW !!\n");
 
             break;
@@ -217,17 +238,37 @@ void play_game()
     }
 }
 
-void player_move(char board[3][3], char player)
+void player_move(char board[3][3])
 {
+    int count = 0, x, y;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                count++;
+                x = i;
+                y = j;
+            }
+        }
+    }
+
+    if (count == 1)
+    {
+        board[x][y] = X;
+        
+        return;
+    }
+
     int row, col;
 
     do
     {
-        printf("\nPlayer %c's Turn.", player);
+        printf("\nPlayer's Turn.");
 
-        printf("\nEnter Row and Column (1-3) for Player %c : ", player);
-
-        // cpu_move(board, player);
+        printf("\nEnter Row and Column (1-3) for Player : ");
 
         scanf("%d", &row);
 
@@ -237,14 +278,97 @@ void player_move(char board[3][3], char player)
 
         col--; // converting to zero-based
 
-    } while (!is_valid_move);
+    } while (!is_valid_move(board, row, col));
 
-    board[row][col] = player;
+    board[row][col] = X;
 }
 
-void cpu_move(char board[3][3], char player)
+void cpu_move(char board[3][3])
 {
-    player_move(board, player);
+    //? 1. Play for immediate win
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                board[i][j] = O;
+
+                if (check_win(board, O))
+                {
+                    return;
+                }
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    //! 2. Play for immediate block
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                board[i][j] = X;
+
+                if (check_win(board, X))
+                {
+                    board[i][j] = O;
+
+                    return;
+                }
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    // Hard mode
+    if (difficulty.Hard)
+    {
+        //! 3.Play Center if possible
+        if (board[1][1] == ' ')
+        {
+            board[1][1] = O;
+            return;
+        }
+    }
+
+    //? 4.Play for corners if possible
+    if (board[0][0] == ' ')
+    {
+        board[0][0] = O;
+        return;
+    }
+    if (board[0][2] == ' ')
+    {
+        board[0][2] = O;
+        return;
+    }
+    if (board[2][0] == ' ')
+    {
+        board[2][0] = O;
+        return;
+    }
+    if (board[2][2] == ' ')
+    {
+        board[2][2] = O;
+        return;
+    }
+
+    //* 5.Play for first available move
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (board[i][j] == ' ')
+            {
+                board[i][j] = O;
+
+                return;
+            }
+        }
+    }
 }
 
 int is_valid_move(char board[3][3], int row, int col)
@@ -253,8 +377,3 @@ int is_valid_move(char board[3][3], int row, int col)
              col < 0 || col > 2 ||
              board[row][col] != ' ');
 }
-
-
-
-
-
