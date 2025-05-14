@@ -22,6 +22,7 @@ int check_draw(char board[3][3]);
 void play_game();
 void player_move(char board[3][3], char player);
 void cpu_move(char board[3][3], char player);
+int is_valid_move(char board[3][3], int row, int col);
 
 int main()
 {
@@ -147,7 +148,7 @@ int check_draw(char board[3][3])
     {
         for (int j = 0; j < 3; j++)
         {
-            if (board[i][j] = ' ')
+            if (board[i][j] == ' ')
             {
                 return 0;
             }
@@ -174,6 +175,8 @@ void play_game()
         {
             player_move(board, X);
 
+            print_board(board);
+
             if (check_win(board, X))
             {
                 score.Player++;
@@ -188,6 +191,8 @@ void play_game()
         else
         {
             cpu_move(board, O);
+
+            print_board(board);
 
             if (check_win(board, O))
             {
@@ -214,7 +219,27 @@ void play_game()
 
 void player_move(char board[3][3], char player)
 {
-    cpu_move(board, player);
+    int row, col;
+
+    do
+    {
+        printf("\nPlayer %c's Turn.", player);
+
+        printf("\nEnter Row and Column (1-3) for Player %c : ", player);
+
+        // cpu_move(board, player);
+
+        scanf("%d", &row);
+
+        scanf("%d", &col);
+
+        row--; // converting to zero-based
+
+        col--; // converting to zero-based
+
+    } while (!is_valid_move);
+
+    board[row][col] = player;
 }
 
 void cpu_move(char board[3][3], char player)
@@ -222,9 +247,12 @@ void cpu_move(char board[3][3], char player)
     player_move(board, player);
 }
 
-
-
-
+int is_valid_move(char board[3][3], int row, int col)
+{
+    return !(row < 0 || row > 2 ||
+             col < 0 || col > 2 ||
+             board[row][col] != ' ');
+}
 
 
 
