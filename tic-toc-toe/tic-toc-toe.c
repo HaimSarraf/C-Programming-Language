@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define X 'X'
+#define O 'O'
 typedef struct
 {
     int Player;
@@ -162,17 +164,17 @@ void play_game()
         {' ', ' ', ' '},
         {' ', ' ', ' '}};
 
-    char current_player = rand() % 2 == 0 ? 'X' : 'O';
+    char current_player = rand() % 2 == 0 ? X : O;
 
     while (1)
     {
         print_board(board);
 
-        if (current_player == 'X')
+        if (current_player == X)
         {
-            player_move(board, 'X');
+            player_move(board, X);
 
-            if (check_win(board, 'X'))
+            if (check_win(board, X))
             {
                 score.Player++;
 
@@ -181,13 +183,13 @@ void play_game()
                 break;
             }
 
-            current_player = 'O';
+            current_player = O;
         }
         else
         {
-            cpu_move(board, 'O');
+            cpu_move(board, O);
 
-            if (check_win(board, 'O'))
+            if (check_win(board, O))
             {
                 score.CPU++;
 
@@ -196,7 +198,7 @@ void play_game()
                 break;
             }
 
-            current_player = 'X';
+            current_player = X;
         }
 
         if (check_draw(board))
