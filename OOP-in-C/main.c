@@ -15,12 +15,13 @@ void carnivore_eats(Carnivore *self);
 char *animal_get_name(Animal *self);
 void animal_set_name(Animal *self, char *name);
 
-#define eats(animal)                                                           \
-  _Generic((animal),                                                           \
-      Animal *: animal_eats,                                                   \
-      Carnivore *: carnivore_eats,                                             \
-      Cat *: cat_eats,                                                         \
-      default: animal_eats)(animal)
+#define eats(animal)\
+  _Generic((animal),\
+      Animal *: animal_eats,\
+      Carnivore *: carnivore_eats,\
+      Cat *: cat_eats,\
+      default: animal_eats\
+)(animal)
 
 typedef struct private { bool claws_out; }
 Private;
