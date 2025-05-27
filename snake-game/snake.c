@@ -47,7 +47,7 @@ int main() {
 
     game_play();
 
-    long sleep_time = 3000000 / (score != 0 ? score : 10);
+    long sleep_time = 3000000 / (score != 0 ? (score / 2) : 5);
 
     usleep(sleep_time);
   }
@@ -184,6 +184,14 @@ void game_play() {
     head_y = HEIGHT - 1;
   } else if (head_y >= HEIGHT) {
     head_y = 0;
+  }
+
+  for (int i = 0; i < tail_length; i++) {
+    if (tail_x[i] == head_x && tail_y[i] == head_y) {
+      printf("\n GAME OVER !!\n");
+      printf("\n You Hit Your Tail\n");
+      exit(0);
+    }
   }
 
   if (head_x == fruit_x && head_y == fruit_y) {
